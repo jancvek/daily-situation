@@ -6,7 +6,7 @@
             <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
             <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
             <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-            <script src="/bootstrap-notify-3.1.3/bootstrap-notify-3.1.3/bootstrap-notify.js"></script>
+            <script src="bootstrap-notify-3.1.3/bootstrap-notify.js"></script>
             
     </head>
     <style>
@@ -31,12 +31,12 @@
             //       addCard(field);
             //     });
             //   });
-
+              debugger;
                 var jqxhr = $.getJSON( "../getData", function(data) {
                     console.log( "success" );
                     debugger;
                     var d = data.data;
-                    $.each(data, function(i, field){
+                    $.each(d, function(i, field){
                         addCard(field);
                     });
 
@@ -63,24 +63,45 @@
               var form = $(this).closest('.cvek_form');
               var card = form.closest(".card");
 
-              var pocutje = form.find("#pocutje").val()
-              var bilaSpolnost = form.find("#bilaSpolnost").is(':checked')
-              var zacelaA = form.find("#zacelaA").is(':checked')
-              var rdeciDnevi = form.find("#rdeciDnevi").is(':checked')
-              var dodatno = form.find("#dodatno").val()
+              var pocutje = form.find("#pocutje").val();
+              var bilaSpolnost = (form.find("#bilaSpolnost").is(':checked'))? '1' : '0';
+              var zacelaA = (form.find("#zacelaA").is(':checked'))? '1' : '0';
+              var rdeciDnevi = (form.find("#rdeciDnevi").is(':checked'))? '1' : '0';
+              var dodatno = form.find("#dodatno").val();
               
               // alert(pocutje +" - "+bilaSpolnost+" - "+zacelaA+" - "+rdeciDnevi+" - "+dodatno);
 
-              $.notify({
-                // options
-                message: 'Successfuly saved' 
-              },{
-                // settings
-                type: 'success',  //warning, danger
-                delay: 1000
-              });
+              var url = "../saveData?id="+buttId+"&filling="+pocutje+"&sex="+bilaSpolnost+"&a_init="+zacelaA+"&red_day="+rdeciDnevi+"&additional="+dodatno;
+              var jqxhr = $.getJSON( url, function(data) {
+                    console.log( "success" );
+                })
+                .done(function(data) {
+                    console.log( "second success" );
+                    $.notify({
+                      // options
+                      message: 'Successfuly saved' 
+                    },{
+                      // settings
+                      type: 'success',  //warning, danger
+                      delay: 1000
+                    });
 
-              card.remove();
+                    card.remove();
+                })
+                .fail(function() {
+                    console.log( "error" );
+                    $.notify({
+                      // options
+                      message: 'Error!' 
+                    },{
+                      // settings
+                      type: 'danger',  //warning, danger
+                      delay: 1000
+                    });
+                })
+                .always(function() {
+                    console.log( "complete" );
+                });     
             });
 
             function addCard(field){

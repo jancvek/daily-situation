@@ -1,5 +1,6 @@
 import json
 import os
+from datetime import date
 
 currPath = os.path.dirname(os.path.abspath(__file__))
 parentPath = os.path.dirname(currPath)
@@ -10,6 +11,7 @@ import sys
 sys.path.insert(1, libPath)
 
 import jan_sqlite
+import jan_email
 
 
 def getDailySituationMailn():
@@ -29,11 +31,46 @@ def getDailySituationMailn():
         "data": dataList
     }
 
-    dJson = json.dumps(returnObj)
+    return returnObj
 
-    print(dJson)
+# values = ('1','MASA',str(cobissMasa.status.name),cobissMasa.minDays,cobissMasa.error)
+def updateDailySituation(id, values):
+    # date format -> 2019-12-30 08:30:40
 
-    return dJson
+    sqlConn = jan_sqlite.create_connection(currPath+"/data.db")
+    
+    with sqlConn:
+        res = jan_sqlite.update_data_daily_situation(sqlConn, 'data', id, values)
 
-    # def addDailySituationToday():
-        # date format -> 2019-12-30 08:30:40
+    return res
+
+def addNewDailySituationToday():
+
+    today = date.today()
+    dt_string = today.strftime("%Y-%m-%d")
+
+    sqlConn = jan_sqlite.create_connection(currPath+"/data.db")
+
+    # preveri ali za ta dan že obstaja zapis '2020-03-05'
+    with sqlConn:
+        data = jan_sqlite.run_query(sqlConn, "SELECT * FROM data WHERE data.day = '"+dt_string+"'")
+
+        if len(data) > 0:
+            print("zapis za ta dan že obstaja. Zapis ni bil dodan")    
+            return    
+        
+        params = "day,is_complete,filling,sex,a_init,red_day,additional"
+        values = (dt_string,'0','0','0','0','0','')
+        res = jan_sqlite.insert_data(sqlConn,'data',params,values)
+
+def checkForNotify():
+
+    sqlConn = jan_sqlite.create_connection(currPath+"/data.db")
+
+    with sqlConn:
+        data = jan_sqlite.run_query(sqlConn, "SELECT * FROM data WHERE is_complete = '0'")
+
+    if len(data) > 3:
+        # send email
+        email = jan_email.Email()
+        email.sentEmail("jan.cvek@gmail.com","Daily Situation API","Vnesi podatke za zadnje dni! www.cvek.eu:7777")

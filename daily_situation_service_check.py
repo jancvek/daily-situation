@@ -1,0 +1,4 @@
+import daily_situation
+
+daily_situation.addNewDailySituationToday()
+daily_situation.checkForNotify()

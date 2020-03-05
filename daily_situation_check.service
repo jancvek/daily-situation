@@ -1,0 +1,14 @@
+[Unit]
+Description=Service za dodajanje in preverjanje daily situation baze
+After=network.target
+
+[Service]
+ExecStart=/home/lubuntu/jan-projects/janenv/bin/python -u daily_situation_service_check.py
+WorkingDirectory=/home/lubuntu/jan-projects/daily-situation/
+StandardOutput=inherit
+StandardError=inherit
+Restart=no
+User=lubuntu
+
+[Install]
+WantedBy=multi-user.target
