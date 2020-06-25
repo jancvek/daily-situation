@@ -24,7 +24,7 @@ def getDailySituationMailn():
         
     dataList = []   
     for a in data:
-        d = {"id": a[0], "day": a[1], "is_complete": a[2], "filling": a[3], "sex": a[4], "a_init": a[5], "red_day": a[6], "additional": a[7]}
+        d = {"id": a[0], "day": a[1], "is_complete": a[2], "filling": a[3], "sex": a[4], "a_init": a[5], "red_day": a[6], "bs": a[7] "additional": a[8]}
         dataList.append(d)
 
     returnObj = {
@@ -59,8 +59,8 @@ def addNewDailySituationToday():
             print("zapis za ta dan že obstaja. Zapis ni bil dodan")    
             return    
         
-        params = "day,is_complete,filling,sex,a_init,red_day,additional"
-        values = (dt_string,'0','0','0','0','0','')
+        params = "day,is_complete,filling,sex,a_init,red_day,bs,additional"
+        values = (dt_string,'0','0','0','0','0','0','')
         res = jan_sqlite.insert_data(sqlConn,'data',params,values)
 
 def checkForNotify():

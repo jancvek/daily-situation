@@ -85,6 +85,7 @@ class Handler(BaseHTTPRequestHandler):
                 sex = ''
                 a_init = ''
                 red_day = ''
+                bs = ''
                 additional = ''
 
                 if 'id' in query_parameters:
@@ -104,13 +105,15 @@ class Handler(BaseHTTPRequestHandler):
                     a_init = query_parameters["a_init"][0]
                 if 'red_day' in query_parameters:
                     red_day = query_parameters["red_day"][0]
+                if 'bs' in query_parameters:
+                    bs = query_parameters["bd"][0]
                 if 'additional' in query_parameters:
                     additional = query_parameters["additional"][0]
 
                 sqlConn = jan_sqlite.create_connection(currPath+"/data.db")
 
                 # values = ('1','MASA',str(cobissMasa.status.name),cobissMasa.minDays,cobissMasa.error)
-                values = (int(filling), int(sex), int(a_init), int(red_day), additional)
+                values = (int(filling), int(sex), int(a_init), int(red_day), int(bd), additional)
                 res = daily_situation.updateDailySituation(id, values)
 
                 mStr = json.dumps({"status": "OK"})

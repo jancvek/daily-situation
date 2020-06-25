@@ -68,11 +68,12 @@
               var bilaSpolnost = (form.find("#bilaSpolnost").is(':checked'))? '1' : '0';
               var zacelaA = (form.find("#zacelaA").is(':checked'))? '1' : '0';
               var rdeciDnevi = (form.find("#rdeciDnevi").is(':checked'))? '1' : '0';
+              var bs = (form.find("#bs").is(':checked'))? '1' : '0';
               var dodatno = form.find("#dodatno").val();
               
               // alert(pocutje +" - "+bilaSpolnost+" - "+zacelaA+" - "+rdeciDnevi+" - "+dodatno);
 
-              var url = "../saveData?id="+buttId+"&filling="+pocutje+"&sex="+bilaSpolnost+"&a_init="+zacelaA+"&red_day="+rdeciDnevi+"&additional="+dodatno;
+              var url = "../saveData?id="+buttId+"&filling="+pocutje+"&sex="+bilaSpolnost+"&a_init="+zacelaA+"&red_day="+rdeciDnevi+"&bs="+bs+"&additional="+dodatno;
               var jqxhr = $.getJSON( url, function(data) {
                     console.log( "success" );
                 })
@@ -113,6 +114,7 @@
               var filling = field.filling;
               var aInit = field.a_init;
               var redDay = field.red_day;
+              var bs = field.bs;
               var additional = field.additional;
 
               var date = new Date(day);
@@ -163,6 +165,14 @@
               "                      <input class='form-check-input' type='checkbox' id='rdeciDnevi'>" +
               "                      <label class='form-check-label' for='rdeciDnevi'>" +
               "                        R." +
+              "                      </label>" +
+              "                    </div>" +
+              "                  </div>" +
+              "                  <div class='col-auto'>" +
+              "                    <div class='form-check'>" +
+              "                      <input class='form-check-input' type='checkbox' id='bs'>" +
+              "                      <label class='form-check-label' for='bs'>" +
+              "                        BS" +
               "                      </label>" +
               "                    </div>" +
               "                  </div>" +
