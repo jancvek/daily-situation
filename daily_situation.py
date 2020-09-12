@@ -24,7 +24,7 @@ def getDailySituationMailn():
         
     dataList = []   
     for a in data:
-        d = {"id": a[0], "day": a[1], "is_complete": a[2], "filling": a[3], "sex": a[4], "a_init": a[5], "red_day": a[6], "bs": a[7] "additional": a[8]}
+        d = {"id": a[0], "day": a[1], "is_complete": a[2], "filling": a[3], "sex": a[4], "a_init": a[5], "red_day": a[6], "bs": a[7], "additional": a[8]}
         dataList.append(d)
 
     returnObj = {
